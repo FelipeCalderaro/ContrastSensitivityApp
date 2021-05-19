@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:adeptus_vision/core/models/image_info_model.dart';
 import 'package:adeptus_vision/core/services/cs_api.dart';
 import 'package:adeptus_vision/core/view_models/test_view_model.dart';
+import 'package:adeptus_vision/ui/screens/graph_screen.dart';
 import 'package:adeptus_vision/ui/screens/home.dart';
+import 'package:adeptus_vision/ui/values/colors.dart';
 import 'package:adeptus_vision/ui/values/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class ImageScreen extends StatelessWidget {
     final testViewModel = Provider.of<TestViewModel>(context);
     return Scaffold(
       backgroundColor: Color(0xffD2D2D2),
-      appBar: AppBar(),
+      // appBar: AppBar(),
       body: testViewModel.imageInfos == null
           ? Center(
               child: CircularProgressIndicator(),
@@ -29,21 +31,42 @@ class ImageScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: Image.memory(
-                          Base64Decoder()
-                              .convert(testViewModel.imageInfos!.img),
-                          color: Colors.grey.withOpacity(.3),
-                          colorBlendMode: BlendMode.colorDodge,
+                      child: Container(
+                        height: 200,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(1000),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Image.memory(
+                            Base64Decoder()
+                                .convert(testViewModel.imageInfos!.img),
+                            color: Colors.grey.withOpacity(.3),
+                            colorBlendMode: BlendMode.colorDodge,
+                          ),
                         ),
                       ),
                     ),
                     Positioned(
-                      top: MediaQuery.of(context).size.height * .7,
-                      child:
-                          Text('Deslize para a direita para acessar os botões'),
+                      bottom: MediaQuery.of(context).size.height * .1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.all(DEFAULT_PADDING / 2),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Deslize para a direita para acessar os botões',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              size: 20,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
+                      ),
                     )
                     // Positioned.fill(
                     //   child: BackdropFilter(
@@ -61,7 +84,8 @@ class ImageScreen extends StatelessWidget {
                 Center(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    padding: EdgeInsets.all(DEFAULT_PADDING),
+                    padding: EdgeInsets.all(DEFAULT_PADDING * 2),
+                    childAspectRatio: 20 / 9,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -70,12 +94,14 @@ class ImageScreen extends StatelessWidget {
                             testViewModel.calculateHits('center');
                             if (testViewModel
                                     .testeImages[testViewModel.currentCycle]!
-                                    .length ==
+                                    .length >=
                                 MAX_NUMBER_OF_TESTS) {
+                              testViewModel.generateGraphAndResults(
+                                  testViewModel.currentCycle!);
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => GraphScreen(),
                                 ),
                               );
                             }
@@ -83,7 +109,10 @@ class ImageScreen extends StatelessWidget {
                                 duration: Duration(milliseconds: 230),
                                 curve: Curves.bounceInOut);
                           },
-                          child: Icon(Icons.arrow_upward),
+                          child: Icon(
+                            Icons.arrow_upward,
+                            size: 50,
+                          ),
                         ),
                       ),
                       Padding(
@@ -93,12 +122,14 @@ class ImageScreen extends StatelessWidget {
                             testViewModel.calculateHits('right');
                             if (testViewModel
                                     .testeImages[testViewModel.currentCycle]!
-                                    .length ==
+                                    .length >=
                                 MAX_NUMBER_OF_TESTS) {
+                              testViewModel.generateGraphAndResults(
+                                  testViewModel.currentCycle!);
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => GraphScreen(),
                                 ),
                               );
                             }
@@ -106,7 +137,10 @@ class ImageScreen extends StatelessWidget {
                                 duration: Duration(milliseconds: 230),
                                 curve: Curves.bounceInOut);
                           },
-                          child: Icon(Icons.arrow_forward),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            size: 50,
+                          ),
                         ),
                       ),
                       Padding(
@@ -116,12 +150,14 @@ class ImageScreen extends StatelessWidget {
                             testViewModel.calculateHits('left');
                             if (testViewModel
                                     .testeImages[testViewModel.currentCycle]!
-                                    .length ==
+                                    .length >=
                                 MAX_NUMBER_OF_TESTS) {
+                              testViewModel.generateGraphAndResults(
+                                  testViewModel.currentCycle!);
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => GraphScreen(),
                                 ),
                               );
                             }
@@ -129,7 +165,10 @@ class ImageScreen extends StatelessWidget {
                                 duration: Duration(milliseconds: 230),
                                 curve: Curves.bounceInOut);
                           },
-                          child: Icon(Icons.arrow_back),
+                          child: Icon(
+                            Icons.arrow_back,
+                            size: 50,
+                          ),
                         ),
                       ),
                       Padding(
@@ -139,12 +178,14 @@ class ImageScreen extends StatelessWidget {
                             testViewModel.calculateHits('None');
                             if (testViewModel
                                     .testeImages[testViewModel.currentCycle]!
-                                    .length ==
+                                    .length >=
                                 MAX_NUMBER_OF_TESTS) {
+                              testViewModel.generateGraphAndResults(
+                                  testViewModel.currentCycle!);
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => GraphScreen(),
                                 ),
                               );
                             }
@@ -153,8 +194,14 @@ class ImageScreen extends StatelessWidget {
                                 curve: Curves.bounceInOut);
                           },
                           child: Container(
-                            width: 60,
-                            child: Text('Não vejo linhas ou Não sei dizer'),
+                            width: 200,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Vazio',
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
                           ),
                         ),
                       )
