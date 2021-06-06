@@ -6,7 +6,7 @@
 
  
   <application
-        android:label="template_flutter"
+        android:label="Teste de contraste"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity

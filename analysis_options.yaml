@@ -1,0 +1,12 @@
+include: package:lint/analysis_options.yaml
+# Exclude the folowing from the analyzer due to Freezed
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    missing_required_param: error
+    missing_return: error
+    must_be_immutable: error
+    sort_unnamed_constructors_first: ignore
+    avoid_void_async: false

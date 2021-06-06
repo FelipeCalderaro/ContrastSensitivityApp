@@ -14,19 +14,19 @@ class ImageInfoModel {
 
   double contrast;
   String img;
-  int rotation;
+  double rotation;
   int sf;
 
   factory ImageInfoModel.fromRawJson(String str) =>
-      ImageInfoModel.fromJson(json.decode(str));
+      ImageInfoModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
   String toRawJson() => json.encode(toJson());
 
   factory ImageInfoModel.fromJson(Map<String, dynamic> json) => ImageInfoModel(
-        contrast: json["contrast"].toDouble(),
-        img: json["img"],
-        rotation: json["rotation"],
-        sf: json["sf"],
+        contrast: json["contrast"].toDouble() as double,
+        img: json["img"].toString(),
+        rotation: double.parse(json["rotation"].toString()),
+        sf: int.parse(json["sf"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

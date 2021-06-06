@@ -14,16 +14,15 @@ class GraphModel {
   double contrastThreshold;
   String graph;
   double sensitivity;
-
   factory GraphModel.fromRawJson(String str) =>
-      GraphModel.fromJson(json.decode(str));
+      GraphModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
   String toRawJson() => json.encode(toJson());
 
   factory GraphModel.fromJson(Map<String, dynamic> json) => GraphModel(
-        contrastThreshold: json["contrastThreshold"].toDouble(),
-        graph: json["graph"],
-        sensitivity: json["sensitivity"].toDouble(),
+        contrastThreshold: double.parse(json["contrastThreshold"].toString()),
+        graph: json["graph"].toString(),
+        sensitivity: double.parse(json["sensitivity"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
